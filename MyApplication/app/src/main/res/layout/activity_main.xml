@@ -11,7 +11,56 @@
     tools:context="com.mobiledevices.miguel.prototype.MainActivity">
 
     <TextView
+        android:text="Select an equiment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/view1_main" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:id="@+id/spinner_select_equipment"
+        android:layout_below="@+id/view1_main"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/button_open_equiment" />
+
+    <TextView
+        android:text="Create new equiment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:id="@+id/view2_main"
+        android:layout_below="@+id/button_open_equiment" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Equipement's name"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_alignBaseline="@+id/button2"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/view2_main"
+        android:layout_alignStart="@+id/button_open_equiment" />
+
+    <Button
+        android:text="Open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_open_equiment"
+        android:layout_below="@+id/view1_main"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

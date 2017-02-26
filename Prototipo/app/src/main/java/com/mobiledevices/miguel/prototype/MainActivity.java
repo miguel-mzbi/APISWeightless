@@ -13,9 +13,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> equipments = new ArrayList<String>();
-    String toLoad[];
-    ArrayAdapter<String> equipmentsAdapter;
+    ArrayList<String> equipments = new ArrayList<String>(); // This ArrayList will be deleted after. Should be stored in DB.
+    ArrayAdapter<String> equipmentsAdapter; // This will be a cursorAdapter for DB
     Button createEquipment, openEquipment;
     EditText equipmentName;
     Spinner selectEquipment;
@@ -32,9 +31,7 @@ public class MainActivity extends AppCompatActivity {
         openEquipment = (Button) findViewById(R.id.button_open_equipment);
         equipmentName = (EditText) findViewById(R.id.tedit_equipmentName_equipment);
         selectEquipment = (Spinner) findViewById(R.id.spinner_select_equipment);
-        toLoad = new String[equipments.size()];
-        equipments.toArray(toLoad);
-        equipmentsAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, toLoad);
+        equipmentsAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, equipments);
         equipmentsAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         selectEquipment.setAdapter(equipmentsAdapter);
     }
@@ -49,9 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public void createEquipmentClick(View v) {
 
         equipments.add(equipmentName.getText().toString());
-        toLoad = new String[equipments.size()];
-        equipments.toArray(toLoad);
-        equipmentsAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, toLoad);
+        equipmentsAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, equipments);
         equipmentsAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         selectEquipment.setAdapter(equipmentsAdapter);
     }

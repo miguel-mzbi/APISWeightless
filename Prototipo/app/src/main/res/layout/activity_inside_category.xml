@@ -22,7 +22,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button_add_item_inside"
+        android:layout_above="@+id/button_addItem_inside"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tview_title_inside">
 
@@ -38,7 +38,7 @@
         android:text="Add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_add_item_inside"
+        android:id="@+id/button_addItem_inside"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 

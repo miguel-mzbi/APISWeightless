@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
     public void createEquipmentClick(View v) {
 
         equipments.add(equipmentName.getText().toString());
-        equipmentsAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, equipments);
-        equipmentsAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        selectEquipment.setAdapter(equipmentsAdapter);
+        equipmentsAdapter.notifyDataSetChanged();
     }
 }

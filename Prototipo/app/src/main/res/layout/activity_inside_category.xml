@@ -29,9 +29,8 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tview_title_inside"
             android:layout_alignParentStart="true"
-            android:id="@+id/testView_items_inside" />
+            android:id="@+id/listView_items_inside" />
     </RelativeLayout>
 
     <Button

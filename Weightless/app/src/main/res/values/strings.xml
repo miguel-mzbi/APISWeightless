@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Weightless</string>
+    <string name="title_activity_category_list">CategoryList</string>
+</resources>

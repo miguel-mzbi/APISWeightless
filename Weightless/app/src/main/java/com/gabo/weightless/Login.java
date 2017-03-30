@@ -8,14 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Login extends AppCompatActivity {
+import com.gabo.weightless.DB.DBHelper;
+
+public class LogIn extends AppCompatActivity {
     private EditText userInput, passwordInput;
 
     private DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_log_in);
 
         userInput = (EditText) findViewById(R.id.userInput);
         passwordInput = (EditText) findViewById(R.id.passwordInput);

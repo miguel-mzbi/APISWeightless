@@ -9,7 +9,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.gabo.weightless.Adapters.equipmentListAdapter;
+import com.gabo.weightless.Adapters.EquipmentListAdapter;
+import com.gabo.weightless.DB.DBHelper;
 import com.gabo.weightless.Objects.Equipment;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class EquipmentList extends AppCompatActivity {
     private ListView listView;
     private ArrayList<Equipment> data;
     private DBHelper db;
-    private equipmentListAdapter adapter;
+    private EquipmentListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class EquipmentList extends AppCompatActivity {
         data = db.getEquipment(user);
 
         listView = (ListView) findViewById(R.id.listView);
-        adapter = new equipmentListAdapter(data, this);
+        adapter = new EquipmentListAdapter(data, this);
 
         listView.setAdapter(adapter);
 
@@ -60,7 +61,7 @@ public class EquipmentList extends AppCompatActivity {
     }
 
     public void createEquipment(View v){
-        Intent i = new Intent(this, createEquipment.class);
+        Intent i = new Intent(this, CreateEquipment.class);
         i.putExtra("user",user);
         startActivityForResult(i, 0);
     }
@@ -68,7 +69,7 @@ public class EquipmentList extends AppCompatActivity {
     protected void onActivityResult(int requestedCode, int resultCode, Intent data){
         if(requestedCode == 0 && resultCode == Activity.RESULT_OK){
 
-            adapter = new equipmentListAdapter(db.getEquipment(user), this);
+            adapter = new EquipmentListAdapter(db.getEquipment(user), this);
 
             listView.setAdapter(adapter);
         }

@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class createEquipment extends AppCompatActivity {
+import com.gabo.weightless.DB.DBHelper;
+
+public class CreateEquipment extends AppCompatActivity {
     private EditText nameInput;
     private String user;
     private DBHelper dbHelper;

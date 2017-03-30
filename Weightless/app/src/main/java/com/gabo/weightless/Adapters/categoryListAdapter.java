@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.gabo.weightless.DBHelper;
+import com.gabo.weightless.DB.DBHelper;
 import com.gabo.weightless.Objects.Category;
 import com.gabo.weightless.R;
 
@@ -17,12 +17,12 @@ import java.util.ArrayList;
  * Created by miguel on 15/03/17.
  */
 
-public class categoryListAdapter extends BaseAdapter implements ListAdapter {
+public class CategoryListAdapter extends BaseAdapter implements ListAdapter {
 
     private ArrayList<Category> data;
     private Activity activity;
 
-    public categoryListAdapter(ArrayList<Category> data, Activity activity) {
+    public CategoryListAdapter(ArrayList<Category> data, Activity activity) {
         this.data = data;
         this.activity = activity;
     }
@@ -60,7 +60,8 @@ public class categoryListAdapter extends BaseAdapter implements ListAdapter {
         String n = data.get(position).getName();
         name.setText(n);
         if(!n.equals("No categories created for this equipment")) {
-            weight.setText(Integer.toString(db.getCategoryWeight(data.get(position).getID())));
+            String s = Double.toString(data.get(position).getCategoryWeight());
+            weight.setText(s);
         }
         return convertView;
     }

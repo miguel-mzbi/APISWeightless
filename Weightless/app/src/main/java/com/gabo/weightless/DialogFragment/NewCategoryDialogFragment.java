@@ -1,6 +1,5 @@
 package com.gabo.weightless.DialogFragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,10 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.gabo.weightless.DBHelper;
-import com.gabo.weightless.Objects.Category;
 import com.gabo.weightless.R;
 
 /**
@@ -41,7 +37,6 @@ public class NewCategoryDialogFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.new_category_dialog, null);
         categoryName = (EditText) view.findViewById(R.id.TECategoryName);
-        categoryName.setText("FUNCIONA!!!");
 
         builder.setView(view)
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {

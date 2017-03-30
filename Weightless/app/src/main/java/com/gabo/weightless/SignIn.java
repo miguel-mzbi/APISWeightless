@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gabo.weightless.DB.DBHelper;
+
 public class SignIn extends AppCompatActivity {
     private EditText userInput, emailInput, passwordInput, passwordConfirmationInput;
     private DBHelper dbHelper;

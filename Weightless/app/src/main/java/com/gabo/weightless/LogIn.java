@@ -24,6 +24,7 @@ public class LogIn extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
+
         Button logInButton = (Button) findViewById(R.id.logInButton);
 
         logInButton.setOnClickListener(new View.OnClickListener() {

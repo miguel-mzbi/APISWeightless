@@ -25,6 +25,7 @@ public class EquipmentListAdapter extends BaseAdapter implements ListAdapter{
         this.activity = activity;
     }
 
+    
     @Override
     public int getCount() {
         return data.size();

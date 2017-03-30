@@ -50,5 +50,6 @@ public class CreateEquipment extends AppCompatActivity {
         }else{
             Toast.makeText(this, "You have to fill the input box to continue", Toast.LENGTH_SHORT).show();
         }
+
     }
 }

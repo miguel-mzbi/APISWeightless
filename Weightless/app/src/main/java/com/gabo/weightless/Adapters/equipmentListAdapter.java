@@ -7,7 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.gabo.weightless.DBHelper;
 import com.gabo.weightless.Objects.Equipment;
 import com.gabo.weightless.R;
 
@@ -17,11 +16,11 @@ import java.util.ArrayList;
  * Created by LIC on 08/03/2017.
  */
 
-public class equipmentListAdapter extends BaseAdapter implements ListAdapter{
+public class EquipmentListAdapter extends BaseAdapter implements ListAdapter{
     private ArrayList<Equipment> data;
     private Activity activity;
 
-    public equipmentListAdapter(ArrayList<Equipment> data, Activity activity){
+    public EquipmentListAdapter(ArrayList<Equipment> data, Activity activity){
         this.data = data;
         this.activity = activity;
     }
@@ -45,7 +44,7 @@ public class equipmentListAdapter extends BaseAdapter implements ListAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
-            convertView = activity.getLayoutInflater().inflate(R.layout.equipmentrow, null);
+            convertView = activity.getLayoutInflater().inflate(R.layout.equipment_row, null);
         }
         TextView name, owner;
         name = (TextView) convertView.findViewById(R.id.title);

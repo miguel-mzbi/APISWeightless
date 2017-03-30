@@ -1,4 +1,4 @@
-package com.gabo.weightless;
+package com.gabo.weightless.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.gabo.weightless.Objects.Category;
 import com.gabo.weightless.Objects.Equipment;
+import com.gabo.weightless.Objects.Item;
 
 import java.util.ArrayList;
 
@@ -195,7 +196,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Category> toReturn = new ArrayList<Category>();
 
         if(c.getCount() == 0) {
-            Category defaultCategory = new Category(0, "No categories created for this equipment", 0);
+            Category defaultCategory = new Category(0, "No categories created for this equipment", 0, 0);
             toReturn.add(defaultCategory);
             return toReturn;
         }
@@ -203,7 +204,7 @@ public class DBHelper extends SQLiteOpenHelper {
             c.moveToFirst();
 
             while(!c.isAfterLast()) {
-                toReturn.add(new Category(c.getInt(0), c.getString(1), c.getInt(2)));
+                toReturn.add(new Category(c.getInt(0), c.getString(1), c.getInt(2), getCategoryWeight(c.getInt(0))));
                 c.moveToNext();
             }
 
@@ -211,7 +212,92 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public int getCategoryWeight(int cID) {
-        return 0;
+    public double getCategoryWeight(int cID) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selection = C_CATEGORYID + " = ?";
+        String[] params = {Integer.toString(cID)};
+
+        Cursor c = db.query(ITEMTABLE, null, selection, params, null, null, null);
+
+        int toReturn = 0;
+
+        if(c.getCount() == 0) {
+            return toReturn;
+        }
+        else {
+            c.moveToFirst();
+
+            while(!c.isAfterLast()) {
+                toReturn += c.getDouble(3)*c.getInt(2);
+                c.moveToNext();
+            }
+
+            return toReturn;
+        }
+    }
+
+    public void createItem(int cID, String name, double w, int q) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(C_NAME, name);
+        cv.put(C_WEIGHT, w);
+        cv.put(C_QUANTITY, q);
+        cv.put(C_CATEGORYID, cID);
+        db.insert(ITEMTABLE, null, cv);
+    }
+
+    public ArrayList<Item> getItems(int cID) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selection = C_CATEGORYID + " = ?";
+        String[] params = {Integer.toString(cID)};
+
+        Cursor c = db.query(ITEMTABLE, null, selection, params, null, null, null);
+
+        ArrayList<Item> toReturn = new ArrayList<Item>();
+
+        if(c.getCount() == 0) {
+            Item defaultItem = new Item("No items created for this category", 0, 0, 0, 0);
+            toReturn.add(defaultItem);
+            return toReturn;
+        }
+        else {
+            c.moveToFirst();
+
+            while(!c.isAfterLast()) {
+                toReturn.add(new Item(c.getString(1), c.getDouble(3), c.getInt(2), c.getInt(0), c.getInt(4)));
+                c.moveToNext();
+            }
+
+            return toReturn;
+        }
+    }
+
+    public void removeItem(int iID) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(ITEMTABLE, C_ID + " = " + iID, null);
+    }
+
+    public void removeCategory(int cID) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectionItems = C_CATEGORYID + " = ?";
+        String[] paramsItems = {Integer.toString(cID)};
+
+        Cursor c = db.query(ITEMTABLE, null, selectionItems, paramsItems, null, null, null);
+
+        if(c.getCount() != 0) {
+            c.moveToFirst();
+            while(!c.isAfterLast()) {
+                db.delete(ITEMTABLE, C_ID + " = " + c.getInt(0), null);
+                c.moveToNext();
+            }
+        }
+
+        db.delete(CATEGORYTABLE, C_ID + " = " + cID, null);
     }
 }

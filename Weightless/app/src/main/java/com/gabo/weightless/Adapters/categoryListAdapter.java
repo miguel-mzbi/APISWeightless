@@ -22,6 +22,7 @@ public class CategoryListAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<Category> data;
     private Activity activity;
 
+
     public CategoryListAdapter(ArrayList<Category> data, Activity activity) {
         this.data = data;
         this.activity = activity;

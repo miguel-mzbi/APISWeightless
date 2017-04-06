@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -58,6 +59,19 @@ public class EquipmentList extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                db.removeEquipment((int) id);
+                updateListView();
+                return true;
+            }
+        });
+    }
+
+    public void updateListView() {
+        adapter = new EquipmentListAdapter(db.getEquipment(user), this);
+        listView.setAdapter(adapter);
     }
 
     public void createEquipment(View v){
@@ -68,10 +82,7 @@ public class EquipmentList extends AppCompatActivity {
 
     protected void onActivityResult(int requestedCode, int resultCode, Intent data){
         if(requestedCode == 0 && resultCode == Activity.RESULT_OK){
-
-            adapter = new EquipmentListAdapter(db.getEquipment(user), this);
-
-            listView.setAdapter(adapter);
+            updateListView();
         }
     }
 }

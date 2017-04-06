@@ -2,6 +2,7 @@ package com.gabo.weightless.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,6 +12,8 @@ import com.gabo.weightless.Objects.Category;
 import com.gabo.weightless.Objects.Equipment;
 import com.gabo.weightless.Objects.Item;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
@@ -50,8 +53,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String C_WEIGHT = "weight";
     private static final String C_CATEGORYID = "categoryID";
 
+    Context context;
+
     public DBHelper(Context context){
         super(context, DATABASE, null, VERSION);
+        this.context = context;
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -156,7 +162,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor c = db.query(EQUIPMENTTABLE, null, selection, params, null, null, null);
         if(c.getCount() == 0){
-            Equipment defaultEquip = new Equipment(0, "You don't have any Equipment Created", "");
+            Equipment defaultEquip = new Equipment(0, "You don't have any Equipment Created", "", 0);
             ArrayList<Equipment> r = new ArrayList<Equipment>();
             r.add(defaultEquip);
             return r;
@@ -165,8 +171,8 @@ public class DBHelper extends SQLiteOpenHelper {
             ArrayList<Equipment> r = new ArrayList<Equipment>();
 
             c.moveToFirst();
-            while(!c.isAfterLast()){
-                tmp = new Equipment(c.getInt(0), c.getString(1), c.getString(2));
+            while(!c.isAfterLast()) {
+                tmp = new Equipment(c.getInt(0), c.getString(1), c.getString(2), this.getEquipmentWeight(c.getInt(0)));
                 r.add(tmp);
                 c.moveToNext();
             }
@@ -213,6 +219,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public double getCategoryWeight(int cID) {
+
         SQLiteDatabase db = getReadableDatabase();
 
         String selection = C_CATEGORYID + " = ?";
@@ -220,7 +227,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor c = db.query(ITEMTABLE, null, selection, params, null, null, null);
 
-        int toReturn = 0;
+        double toReturn = 0;
 
         if(c.getCount() == 0) {
             return toReturn;
@@ -229,7 +236,7 @@ public class DBHelper extends SQLiteOpenHelper {
             c.moveToFirst();
 
             while(!c.isAfterLast()) {
-                toReturn += c.getDouble(3)*c.getInt(2);
+                toReturn += this.round(c.getDouble(3)*c.getInt(2), 2);
                 c.moveToNext();
             }
 
@@ -299,5 +306,65 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.delete(CATEGORYTABLE, C_ID + " = " + cID, null);
+    }
+
+    public void removeEquipment(int eID) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectionCategories = C_EQUIPMENTID + " = ?";
+        String[] paramsCategories = {Integer.toString(eID)};
+
+        Cursor c = db.query(CATEGORYTABLE, null, selectionCategories, paramsCategories, null, null, null);
+        ArrayList<Integer> categoryToRemove = new ArrayList<>(c.getCount());
+
+        if(c.getCount() != 0) {
+            c.moveToFirst();
+            while(!c.isAfterLast()) {
+                categoryToRemove.add(c.getInt(0));
+                c.moveToNext();
+            }
+        }
+
+        db.delete(EQUIPMENTTABLE, C_ID + " = " + eID, null);
+        db.close();
+
+        for(int i = 0; i < categoryToRemove.size(); i++) {
+            this.removeCategory(categoryToRemove.get(i));
+        }
+    }
+
+    public double getEquipmentWeight(int eID) {
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selection = C_EQUIPMENTID + " = ?";
+        String[] params = {Integer.toString(eID)};
+
+        Cursor c = db.query(CATEGORYTABLE, null, selection, params, null, null, null);
+
+        double toReturn = 0;
+
+        if(c.getCount() == 0) {
+            return toReturn;
+        }
+        else {
+            c.moveToFirst();
+
+            while(!c.isAfterLast()) {
+                toReturn += this.getCategoryWeight(c.getInt(0));
+                c.moveToNext();
+            }
+
+            return toReturn;
+        }
+    }
+
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal number = new BigDecimal(value);
+        number = number.setScale(places, RoundingMode.HALF_UP);
+        return number.doubleValue();
     }
 }

@@ -47,11 +47,16 @@ public class EquipmentListAdapter extends BaseAdapter implements ListAdapter{
         if(convertView == null){
             convertView = activity.getLayoutInflater().inflate(R.layout.equipment_row, null);
         }
-        TextView name, owner;
+        TextView name, owner, weight;
         name = (TextView) convertView.findViewById(R.id.title);
         owner = (TextView) convertView.findViewById(R.id.owner);
+        weight = (TextView) convertView.findViewById(R.id.equipment_weight);
         name.setText(data.get(position).getName());
         owner.setText(data.get(position).getOwner());
+        if(!data.get(position).getName().equals("You don't have any Equipment Created")) {
+            String s = Double.toString(data.get(position).getTotalWeight());
+            weight.setText(s);
+        }
 
         return convertView;
     }

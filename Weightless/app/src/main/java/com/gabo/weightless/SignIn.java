@@ -40,7 +40,7 @@ public class SignIn extends AppCompatActivity {
                 psdS = passwordInput.getText().toString(),
                 psdCS = passwordConfirmationInput.getText().toString();
         if(userS.length() > 0 && emailS.length() > 0 && psdS.length() > 0 && psdCS.length() > 0){
-            if(!dbHelper.userExists(userS)){
+            if(!dbHelper.userExists(emailS)){
                 if(psdS.compareTo(psdCS) == 0){
                     dbHelper.createUser(userS, emailS, psdS);
                     finish();
@@ -48,7 +48,7 @@ public class SignIn extends AppCompatActivity {
                     Toast.makeText(this, "the password doesn't match", Toast.LENGTH_SHORT).show();
                 }
             }else{
-                Toast.makeText(this, "This user already exists", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "This email is already in use", Toast.LENGTH_SHORT).show();
             }
         }else{
             Toast.makeText(this, "You have to fill every input box to create user", Toast.LENGTH_SHORT).show();

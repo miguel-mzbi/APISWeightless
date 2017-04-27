@@ -108,10 +108,10 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(C_PSWD, password);
         db.insert(USERTABLE, null, cv);
     }
-    public boolean userExists(String user){
+    public boolean userExists(String email){
         SQLiteDatabase db = getWritableDatabase();
-        String selection = C_USER + " = ?";
-        String[] params = {user};
+        String selection = C_MAIL + " = ?";
+        String[] params = {email};
         Cursor c = db.query(USERTABLE, null, selection, params, null, null, null);
         if(c.getCount() == 0){
             return false;
@@ -122,7 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean userValidation(String user, String password){
         SQLiteDatabase db = getWritableDatabase();
 
-        String selection = C_USER + " = ?";
+        String selection = C_MAIL + " = ?";
         String[] params = {user};
         Cursor c = db.query(USERTABLE, null, selection, params, null, null, null);
         c.moveToFirst();
@@ -134,16 +134,25 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
     }
-    public void createEquipment(String user, String name){
+    public String getUserFromMail(String mail){
         SQLiteDatabase db = getWritableDatabase();
-
+        String selection = C_MAIL + "= ?";
+        String[] params = {mail};
+        Cursor c = db.query(USERTABLE, null, selection, params, null, null, null);
+        c.moveToFirst();
+        return c.getString(1);
+    }
+    public void createEquipment(String email, String name){
+        SQLiteDatabase db = getWritableDatabase();
+        String user = getUserFromMail(email);
         ContentValues cv = new ContentValues();
         cv.put(C_NAME, name);
         cv.put(C_OWNER, user);
         db.insert(EQUIPMENTTABLE, null, cv);
     }
-    public boolean equipmentExists(String name, String user){
+    public boolean equipmentExists(String name, String email){
         SQLiteDatabase db = getWritableDatabase();
+        String user = getUserFromMail(email);
         String selection = C_NAME + " = ? AND " + C_OWNER + " = ?";
         String[] params = {name, user};
         Cursor c = db.query(EQUIPMENTTABLE, null, selection, params, null, null, null);
@@ -154,9 +163,9 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<Equipment> getEquipment(String user){
+    public ArrayList<Equipment> getEquipment(String email){
         SQLiteDatabase db = getWritableDatabase();
-
+        String user = getUserFromMail(email);
         String selection = C_OWNER + " = ?";
         String[] params = {user};
 

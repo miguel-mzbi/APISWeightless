@@ -45,7 +45,7 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void logIn(View v){
-        if(userInput.getText().toString().length() > 0){
+        if(userInput.getText().toString().length() > 0 && passwordInput.getText().toString().length() > 0){
             if(dbHelper.userExists(userInput.getText().toString())){
                 if(dbHelper.userValidation(userInput.getText().toString(), passwordInput.getText().toString())){
                     Toast.makeText(this, "Log IN", Toast.LENGTH_SHORT).show();
@@ -53,10 +53,10 @@ public class LogIn extends AppCompatActivity {
                     i.putExtra("user", userInput.getText().toString());
                     startActivity(i);
                 }else{
-                    Toast.makeText(this, "The password is incorrect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Either the mail or the password is incorrect", Toast.LENGTH_SHORT).show();
                 }
             }else{
-                Toast.makeText(this, "This user doesn't exist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "This email doesn't exist", Toast.LENGTH_SHORT).show();
             }
         }else{
             Toast.makeText(this, "You have to fill the input boxes to log in", Toast.LENGTH_SHORT).show();

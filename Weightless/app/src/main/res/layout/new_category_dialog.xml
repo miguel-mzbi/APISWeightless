@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Category Name"
         android:ems="10"
         android:id="@+id/TECategoryName"
         android:layout_below="@+id/textView6"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:hint="Category Name" />
 </RelativeLayout>

@@ -27,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String EQUIPMENTTABLE = "EQUIPMENTS";
     private static final String CATEGORYTABLE = "CATEGORIES";
     private static final String ITEMTABLE = "ITEMS";
+    private static final String SHAREDEQUIPMENTTABLE = "SHAREDEQUIPMENT";
 
     private static final String DATABASE = "weightless.db";
     private static final int VERSION = 1;
@@ -40,6 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //FRIENDS
     private static final String C_USER1 = "user1";
     private static final String C_USER2 = "user2";
+    private static final String C_STATUS = "status";
 
     //EQUIPMENT TABLE
     private static final String C_NAME = "name";
@@ -52,6 +54,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String C_QUANTITY = "quantity";
     private static final String C_WEIGHT = "weight";
     private static final String C_CATEGORYID = "categoryID";
+
+    //SHAREDEQUIPMENT
+    //usar C_OWNER
+    private static final String C_FRIEND = "friend";
+    // usar C_EQUIPMENTID
 
     Context context;
 
@@ -69,7 +76,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String creationQueryFriends = "CREATE TABLE " + FRIENDTABLE + "" +
                 " (" + C_ID + " INTEGER PRIMARY KEY, " +
                 C_USER1 + " TEXT, " +
-                C_USER2 + " TEXT) ";
+                C_USER2 + " TEXT, " +
+                C_STATUS + " INTEGER) ";
         String creationQueryEquipment = "CREATE TABLE " + EQUIPMENTTABLE +
                 " (" + C_ID + " INTEGER PRIMARY KEY, " +
                 C_NAME + " TEXT, " +
@@ -84,12 +92,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 C_QUANTITY + " INTEGER, " +
                 C_WEIGHT + " REAL, " +
                 C_CATEGORYID + " INTEGER) ";
+        String creationQuerySharedEquipment = "CREATE TABLE " + SHAREDEQUIPMENTTABLE +
+                " (" + C_ID + " INTEGER PRIMARY KEY, " +
+                C_OWNER + " TEXT, " +
+                C_FRIEND + " TEXT, " +
+                C_EQUIPMENTID + " INTEGER) ";
 
         db.execSQL(creationQueryUser);
         db.execSQL(creationQueryFriends);
         db.execSQL(creationQueryEquipment);
         db.execSQL(creationQueryCategories);
         db.execSQL(creationQueryItems);
+        db.execSQL(creationQuerySharedEquipment);
     }
 
     @Override

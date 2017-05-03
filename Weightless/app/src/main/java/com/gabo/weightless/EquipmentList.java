@@ -48,6 +48,14 @@ public class EquipmentList extends AppCompatActivity {
             }
         });
 
+        Button friendsButton = (Button) findViewById(R.id.friendsButton);
+
+        friendsButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                friends(v);
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -84,5 +92,11 @@ public class EquipmentList extends AppCompatActivity {
         if(requestedCode == 0 && resultCode == Activity.RESULT_OK){
             updateListView();
         }
+    }
+
+    public void friends(View v){
+        Intent i = new Intent(this, Friends.class);
+        i.putExtra("user",user);
+        startActivityForResult(i, 0);
     }
 }

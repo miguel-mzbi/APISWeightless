@@ -19,7 +19,8 @@
         <activity android:name=".EquipmentList" />
         <activity android:name=".CreateEquipment" />
         <activity android:name=".CategoryList" />
-        <activity android:name=".ItemList"></activity>
+        <activity android:name=".ItemList" />
+        <activity android:name=".Friends"></activity>
     </application>
 
 </manifest>

@@ -21,15 +21,6 @@
         android:layout_alignParentStart="true"
         android:hint="User" />
 
-    <TextView
-        android:text="Weightless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

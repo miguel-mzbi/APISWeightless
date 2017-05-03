@@ -46,12 +46,12 @@
         android:layout_above="@+id/createEquipmentButton" />
 
     <TextView
-        android:text="Weightless"
+        android:text="Equipment List"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
 </RelativeLayout>

@@ -19,7 +19,7 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/Title"
         android:layout_centerHorizontal="true"
-        android:hint="Username" />
+        android:hint="Email" />
 
     <EditText
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 </RelativeLayout>

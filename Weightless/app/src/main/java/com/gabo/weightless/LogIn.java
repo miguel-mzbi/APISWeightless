@@ -46,7 +46,7 @@ public class LogIn extends AppCompatActivity {
 
     public void logIn(View v){
         if(userInput.getText().toString().length() > 0 && passwordInput.getText().toString().length() > 0){
-            if(dbHelper.userExists(userInput.getText().toString())){
+            if(dbHelper.emailExists(userInput.getText().toString())){
                 if(dbHelper.userValidation(userInput.getText().toString(), passwordInput.getText().toString())){
                     Toast.makeText(this, "Log IN", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(this, EquipmentList.class);

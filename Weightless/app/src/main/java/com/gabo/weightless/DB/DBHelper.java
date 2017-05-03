@@ -108,10 +108,21 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(C_PSWD, password);
         db.insert(USERTABLE, null, cv);
     }
-    public boolean userExists(String email){
+    public boolean emailExists(String email){
         SQLiteDatabase db = getWritableDatabase();
         String selection = C_MAIL + " = ?";
         String[] params = {email};
+        Cursor c = db.query(USERTABLE, null, selection, params, null, null, null);
+        if(c.getCount() == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public boolean userExists(String user){
+        SQLiteDatabase db = getWritableDatabase();
+        String selection = C_USER + "= ?";
+        String[] params = {user};
         Cursor c = db.query(USERTABLE, null, selection, params, null, null, null);
         if(c.getCount() == 0){
             return false;

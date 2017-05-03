@@ -21,52 +21,60 @@
         android:layout_alignParentStart="true"
         android:hint="User" />
 
+    <TextView
+        android:text="Weightless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/mailInput"
+        android:hint="Email"
         android:layout_below="@+id/userInput"
-        android:layout_alignParentStart="true"
-        android:hint="Email" />
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/validateEmail"
+        android:layout_below="@+id/mailInput"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/passwordInput"
-        android:layout_below="@+id/mailInput"
-        android:layout_alignParentStart="true"
         android:inputType="textPassword"
-        android:hint="Password" />
+        android:hint="Password"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/mailInput"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/passwordConfirmation"
-        android:layout_below="@+id/passwordInput"
-        android:layout_alignParentStart="true"
         android:inputType="textPassword"
-        android:hint="Password Confirmation" />
+        android:hint="Password Confirmation"
+        android:layout_below="@+id/passwordInput"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Sign In"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordConfirmation"
-        android:layout_centerHorizontal="true"
         android:id="@+id/signInButton"
-        android:onClick="createUser (SignIn)" />
-
-    <TextView
-        android:text="Weightless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:onClick="createUser (SignIn)"
+        android:layout_below="@+id/passwordConfirmation"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

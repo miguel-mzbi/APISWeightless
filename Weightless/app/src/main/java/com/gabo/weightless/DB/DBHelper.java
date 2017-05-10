@@ -178,9 +178,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public boolean equipmentExists(String name, String email){
         SQLiteDatabase db = getWritableDatabase();
-        String user = getUserFromMail(email);
+        //String user = getUserFromMail(email);
         String selection = C_NAME + " = ? AND " + C_OWNER + " = ?";
-        String[] params = {name, user};
+        String[] params = {name, email};
         Cursor c = db.query(EQUIPMENTTABLE, null, selection, params, null, null, null);
         if(c.getCount() == 0){
             return false;

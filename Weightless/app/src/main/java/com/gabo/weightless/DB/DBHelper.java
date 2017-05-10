@@ -12,6 +12,7 @@ import com.gabo.weightless.Objects.Category;
 import com.gabo.weightless.Objects.Equipment;
 import com.gabo.weightless.Objects.Item;
 
+import java.io.Console;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -188,9 +189,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<Equipment> getEquipment(String email){
+    public ArrayList<Equipment> getEquipment(String user){
         SQLiteDatabase db = getWritableDatabase();
-        String user = getUserFromMail(email);
         String selection = C_OWNER + " = ?";
         String[] params = {user};
 
@@ -400,5 +400,87 @@ public class DBHelper extends SQLiteOpenHelper {
         BigDecimal number = new BigDecimal(value);
         number = number.setScale(places, RoundingMode.HALF_UP);
         return number.doubleValue();
+    }
+
+    public String[] getFriends(String user) {
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = C_USER1 + " = ? AND " + C_STATUS + " = 1";
+        String[] params = {user};
+
+        Cursor c = db.query(FRIENDTABLE, null, selection, params, null, null, null);
+
+        c.moveToFirst();
+
+        if(c.getCount() > 0){
+            String[] friends = new String[c.getCount()];
+            for(int i = 0; i < c.getCount(); i++){
+                friends[i] = c.getString(2);
+                c.moveToNext();
+            }
+            return friends;
+        }else{
+            String[] friends = {"You don't have any friends"};
+            return friends;
+        }
+
+    }
+    public String[] getFriendRequests(String user){
+        SQLiteDatabase db = getReadableDatabase();
+        String selection = C_USER1 + " = ? AND " + C_STATUS + " = 0";
+        String[] params = {user};
+
+        Cursor c = db.query(FRIENDTABLE, null, selection, params, null, null, null);
+
+        c.moveToFirst();
+
+        if(c.getCount() > 0){
+            String[] friends = new String[c.getCount()];
+            for(int i = 0; i < c.getCount(); i++){
+                friends[i] = c.getString(2);
+                c.moveToNext();
+            }
+
+            return friends;
+        }else{
+            String[] friends = {"You don't have any friend requests"};
+            return friends;
+        }
+    }
+    public void addFriend(String user1, String user2){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(C_USER1, user1);
+        cv.put(C_USER2, user2);
+        cv.put(C_STATUS, 0);
+        db.insert(FRIENDTABLE, null, cv);
+        ContentValues cv2 = new ContentValues();
+        cv2.put(C_USER1, user2);
+        cv2.put(C_USER2, user1);
+        cv2.put(C_STATUS, 0);
+        db.insert(FRIENDTABLE, null, cv2);
+    }
+    public void acceptFriendRequest(String user1, String user2){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selection = C_USER1 + " = ? AND " + C_USER2 + " = ?";
+        String[] params = {user1, user2};
+
+        db.delete(FRIENDTABLE, selection, params);
+        String[] params2 = {user2, user1};
+
+        db.delete(FRIENDTABLE, selection, params2);
+
+        ContentValues cv = new ContentValues();
+        cv.put(C_USER1, user1);
+        cv.put(C_USER2, user2);
+        cv.put(C_STATUS, 1);
+        db.insert(FRIENDTABLE, null, cv);
+        ContentValues cv2 = new ContentValues();
+        cv2.put(C_USER1, user2);
+        cv2.put(C_USER2, user1);
+        cv2.put(C_STATUS, 1);
+        db.insert(FRIENDTABLE, null, cv2);
+
     }
 }

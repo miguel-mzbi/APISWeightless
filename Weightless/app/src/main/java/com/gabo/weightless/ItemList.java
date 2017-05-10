@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ public class ItemList extends AppCompatActivity implements NewItemDialogFragment
     private ItemsListAdapter adapter;
     private ArrayList<Item> data;
     private DBHelper db;
+    private boolean isFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,12 @@ public class ItemList extends AppCompatActivity implements NewItemDialogFragment
         String t = "Category: " + this.categoryName;
         this.title.setText(t);
 
+        if(i.getStringExtra("friend") == null){
+            isFriend = false;
+        }else{
+            isFriend = true;
+        }
+
         this.db = new DBHelper(getApplicationContext());
         this.data = db.getItems(categoryID);
 
@@ -51,27 +60,34 @@ public class ItemList extends AppCompatActivity implements NewItemDialogFragment
         this.lv = (ListView) findViewById(R.id.items_lv);
         this.adapter = new ItemsListAdapter(data, this);
         this.lv.setAdapter(this.adapter);
+        if(!isFriend){
+            this.lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    db.removeItem((int) id);
+                    updateListView();
+                    return true;
+                }
+            });
+            this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String n = adapter.getItem(position).getName();
+                    Double w = adapter.getItem(position).getWeight();
+                    int q = adapter.getItem(position).getQty();
+                    db.removeItem((int) id);
+                    FragmentManager fm = getSupportFragmentManager();
+                    NewItemDialogFragment df = NewItemDialogFragment.newInstance(n, w, q, true);
+                    df.show(fm, "Fragment_NewItem");
+                }
+            });
+        }
 
-        this.lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                db.removeItem((int) id);
-                updateListView();
-                return true;
-            }
-        });
-        this.lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String n = adapter.getItem(position).getName();
-                Double w = adapter.getItem(position).getWeight();
-                int q = adapter.getItem(position).getQty();
-                db.removeItem((int) id);
-                FragmentManager fm = getSupportFragmentManager();
-                NewItemDialogFragment df = NewItemDialogFragment.newInstance(n, w, q, true);
-                df.show(fm, "Fragment_NewItem");
-            }
-        });
+        Button createItem = (Button) findViewById(R.id.createItem_button);
+        ViewGroup layout = (ViewGroup) createItem.getParent();
+        if(null!=layout && isFriend) {
+            layout.removeView(createItem);
+        }
     }
 
     public void createItem(View v) {

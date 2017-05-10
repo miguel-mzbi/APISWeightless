@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ public class CategoryList extends AppCompatActivity implements NewCategoryDialog
     private CategoryListAdapter adapter;
     private ArrayList<Category> data;
     private TextView title;
+    private boolean isFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,12 @@ public class CategoryList extends AppCompatActivity implements NewCategoryDialog
         title = (TextView) findViewById(R.id.CategoryTitle);
         String titleText = "Equipment: " + equipment;
         title.setText(titleText);
+
+        if(i.getStringExtra("friend") == null){
+            isFriend = false;
+        }else{
+            isFriend = true;
+        }
 
         db = new DBHelper(this);
         data = db.getCategories(equipmentID);
@@ -54,20 +63,28 @@ public class CategoryList extends AppCompatActivity implements NewCategoryDialog
                 Intent i = new Intent(getApplicationContext(), ItemList.class);
                 i.putExtra("categoryName", c.getName());
                 i.putExtra("categoryID", c.getID());
+                if(isFriend)
+                    i.putExtra("friend", "1");
                 startActivityForResult(i, 0);
             }
         });
+        if(!isFriend){
+            categoryLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    db.removeCategory((int) id);
+                    updateListView();
+                    return true;
+                }
+            });
+        }
 
-        categoryLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                db.removeCategory((int) id);
-                updateListView();
-                return true;
-            }
-        });
-
-    }
+        Button addCategoryButton = (Button) findViewById(R.id.addCategoryButton);
+        ViewGroup layout = (ViewGroup) addCategoryButton.getParent();
+        if(null!=layout && isFriend) {
+            layout.removeView(addCategoryButton);
+        }
+     }
 
     public void newCategoryClicked(View v) {
 

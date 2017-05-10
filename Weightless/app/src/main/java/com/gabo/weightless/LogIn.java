@@ -50,7 +50,7 @@ public class LogIn extends AppCompatActivity {
                 if(dbHelper.userValidation(userInput.getText().toString(), passwordInput.getText().toString())){
                     Toast.makeText(this, "Log IN", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(this, EquipmentList.class);
-                    i.putExtra("user", userInput.getText().toString());
+                    i.putExtra("user", dbHelper.getUserFromMail(userInput.getText().toString()));
                     startActivity(i);
                 }else{
                     Toast.makeText(this, "Either the mail or the password is incorrect", Toast.LENGTH_SHORT).show();

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -22,7 +23,7 @@ public class EquipmentList extends AppCompatActivity {
     private ArrayList<Equipment> data;
     private DBHelper db;
     private EquipmentListAdapter adapter;
-
+    private boolean isFriend;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,11 @@ public class EquipmentList extends AppCompatActivity {
 
         Intent i = getIntent();
         user = i.getStringExtra("user");
+        if(i.getStringExtra("friend") == null){
+            isFriend = false;
+        }else{
+            isFriend = true;
+        }
 
         db = new DBHelper(this);
         data = db.getEquipment(user);
@@ -41,12 +47,14 @@ public class EquipmentList extends AppCompatActivity {
 
         Button createEquipment = (Button) findViewById(R.id.createEquipmentButton);
 
-        createEquipment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createEquipment(v);
-            }
-        });
+            createEquipment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createEquipment(v);
+                }
+            });
+
+
 
         Button friendsButton = (Button) findViewById(R.id.friendsButton);
 
@@ -64,17 +72,28 @@ public class EquipmentList extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), CategoryList.class);
                 i.putExtra("equipment", e.getName());
                 i.putExtra("eID", e.getId());
+                if(isFriend)
+                    i.putExtra("friend", "1");
                 startActivity(i);
             }
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                db.removeEquipment((int) id);
-                updateListView();
-                return true;
-            }
-        });
+        if(!isFriend){
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    db.removeEquipment((int) id);
+                    updateListView();
+                    return true;
+                }
+            });
+        }
+
+        ViewGroup layout = (ViewGroup) createEquipment.getParent();
+        if(null!=layout && isFriend) {
+            layout.removeView(createEquipment);
+            layout.removeView(friendsButton);
+        }
+
     }
 
     public void updateListView() {

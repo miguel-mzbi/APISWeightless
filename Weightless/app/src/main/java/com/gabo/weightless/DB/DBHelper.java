@@ -170,10 +170,10 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public void createEquipment(String email, String name){
         SQLiteDatabase db = getWritableDatabase();
-        String user = getUserFromMail(email);
+        //String user = getUserFromMail(email);
         ContentValues cv = new ContentValues();
         cv.put(C_NAME, name);
-        cv.put(C_OWNER, user);
+        cv.put(C_OWNER, email);
         db.insert(EQUIPMENTTABLE, null, cv);
     }
     public boolean equipmentExists(String name, String email){

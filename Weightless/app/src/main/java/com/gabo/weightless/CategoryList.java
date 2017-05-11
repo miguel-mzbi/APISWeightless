@@ -19,6 +19,14 @@ import com.gabo.weightless.DialogFragment.NewCategoryDialogFragment;
 import com.gabo.weightless.Objects.Category;
 
 import java.util.ArrayList;
+import java.util.List;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 public class CategoryList extends AppCompatActivity implements NewCategoryDialogFragment.CategoryDialogListener{
 
@@ -30,6 +38,8 @@ public class CategoryList extends AppCompatActivity implements NewCategoryDialog
     private ArrayList<Category> data;
     private TextView title;
     private boolean isFriend;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +94,31 @@ public class CategoryList extends AppCompatActivity implements NewCategoryDialog
         if(null!=layout && isFriend) {
             layout.removeView(addCategoryButton);
         }
+
+        populatePieChart();
      }
+
+    public void populatePieChart(){
+
+        PieChart pieChart ;
+        PieDataSet pieDataSet ;
+        PieData pieData ;
+
+        pieChart = (PieChart) findViewById(R.id.chart);
+
+        List<PieEntry> entries = new ArrayList<>();
+        ArrayList<Category> pa = db.getCategories(equipmentID);
+        for(int i = 0; i<pa.size(); i++) {
+            entries.add(new PieEntry( ((float) pa.get(i).getCategoryWeight()), pa.get(i).getName()));
+        }
+
+        pieDataSet = new PieDataSet(entries, "Sum of categories");
+        pieDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+
+    }
 
     public void newCategoryClicked(View v) {
 
@@ -98,6 +132,7 @@ public class CategoryList extends AppCompatActivity implements NewCategoryDialog
         data = db.getCategories(equipmentID);
         adapter = new CategoryListAdapter(data, this);
         categoryLV.setAdapter(adapter);
+        populatePieChart();
     }
 
     @Override
